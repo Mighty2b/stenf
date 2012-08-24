@@ -1,0 +1,61 @@
+/***
+* This file is part of Stenf.
+* 
+* Stenf is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* Stenf is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with Stenf.  If not, see <http://www.gnu.org/licenses/>.
+***/
+
+--------------------
+
+0. IMPORTANT
+------------
+Ce logiciel est distribué sous GPL, il n'y a aucune garantie quand à son
+fonctionnement. Je ne pourrais être tenu pour responsable en cas de perte
+de données.
+
+1. QUELLE EST SA FONCTION ?
+---------------
+Stenf est un logiciel permettant de chiffrer et de cacher ses données.
+Il a été réalisé en langage C.
+
+2. QUELS SONT LES OS SUPPORTÉS ?
+-------------------------------
+
+DEBIAN
+- Squeeze X64 Armel
+- Sid X86
+
+HAIKU
+- Beta 2
+
+3. REQUIER
+---------------
+- GCC >= 4.2 (non testé avec une version antérieure)
+
+4. INSTALLATION
+--------------------------------
+Todo
+
+5. CONFIGURER
+----------------
+Todo
+
+6. UTILISER
+-----------
+./cacher fichierNeutre fichierSecret nouveauFichier
+./retrouver fichier nouveauFichier
+
+7. BUGS
+--------
+La structure du fichier source n'est pas prise en compte.
+Une image par exemple ne sera donc plus lisible.
