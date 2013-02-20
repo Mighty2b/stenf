@@ -16,7 +16,7 @@
 ***/
 
 void cleanTableau(unsigned int binaire[16], unsigned int ancien[16], int fin) {
-	int i, j;
+	int i, j=0;
 	
 	for (i=0;i<fin;i++) {
 		binaire[i] = 2;
