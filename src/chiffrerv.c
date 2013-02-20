@@ -17,8 +17,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <pthread.h>
-#include "../inc/chiffrervFichier.h"
+#include "../inc/tools.h"
+#include "../inc/stenf.h"
 
 int main(int argc,char **argv) {
 	unsigned long long *taille_source;//La taille du fichier à cacher
@@ -64,4 +64,3 @@ int main(int argc,char **argv) {
 	}
     return EXIT_SUCCESS;
 }
-

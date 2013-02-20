@@ -25,57 +25,36 @@ complete: clean cacher retrouver chiffrerv dechiffrerv
 
 # Compilation des programmes principaux
 
-cacher: cacher.o cacherFichier.o remplir.o entiertobinaire.o fusionTableau.o puis.o encoder.o cleanTableau.o
-	$(CC) -o bin/cacher cacher.o cacherFichier.o remplir.o entiertobinaire.o fusionTableau.o puis.o encoder.o cleanTableau.o
+cacher: cacher.o tools.o
+	$(CC) -o bin/cacher cacher.o tools.o
 
-retrouver: retrouver.o retrouverFichier.o puis.o
-	$(CC) -o bin/retrouver retrouver.o retrouverFichier.o puis.o
+retrouver: retrouver.o tools.o
+	$(CC) -o bin/retrouver retrouver.o tools.o
 
-chiffrerv: chiffrerv.o chiffrervFichier.o entiertobinaire.o puis.o
-	$(CC) -o bin/chiffrerv chiffrerv.o chiffrervFichier.o entiertobinaire.o puis.o
+chiffrerv: chiffrerv.o stenf.o tools.o
+	$(CC) -o bin/chiffrerv chiffrerv.o stenf.o tools.o
 
-dechiffrerv: dechiffrerv.o chiffrervFichier.o entiertobinaire.o puis.o
-	$(CC) -o bin/dechiffrerv dechiffrerv.o chiffrervFichier.o entiertobinaire.o puis.o
+dechiffrerv: dechiffrerv.o stenf.o tools.o
+	$(CC) -o bin/dechiffrerv dechiffrerv.o stenf.o tools.o
 
-# Compilation des modules 
+# Compilation des outils 
+stenf.o: src/stenf.c
+	$(CC) -c src/stenf.c
+	
+tools.o: src/tools.c
+	$(CC) -c src/tools.c
+	
 # Cacher les données
 cacher.o: src/cacher.c
 	$(CC) -c src/cacher.c
-
-cacherFichier.o: src/cacherFichier.c
-	$(CC) -c src/cacherFichier.c
-
-remplir.o: src/remplir.c
-	$(CC) -c src/remplir.c
-
-entiertobinaire.o: src/entiertobinaire.c
-	$(CC) -c src/entiertobinaire.c
-
-fusionTableau.o: src/fusionTableau.c
-	$(CC) -c src/fusionTableau.c
-
-encoder.o: src/encoder.c
-	$(CC) -c src/encoder.c
-
-cleanTableau.o: src/cleanTableau.c
-	$(CC) -c src/cleanTableau.c
-
-puis.o: src/puis.c
-	$(CC) -c src/puis.c
-
+	
 # Retrouver les données
 retrouver.o: src/retrouver.c
 	$(CC) -c src/retrouver.c
 
-retrouverFichier.o: src/retrouverFichier.c
-	$(CC) -c src/retrouverFichier.c
-
 # Chiffrer avec la méthode de Vernam
 chiffrerv.o: src/chiffrerv.c
 	$(CC) -c src/chiffrerv.c
-
-chiffrervFichier.o: src/chiffrervFichier.c
-	$(CC) -c src/chiffrervFichier.c
 
 # Dechiffrer avec la méthode de Vernam
 dechiffrerv.o: src/dechiffrerv.c

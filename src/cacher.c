@@ -17,7 +17,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "../inc/cacherFichier.h"
+#include "../inc/tools.h"
+#include "../inc/cacher.h"
 
 int main(int argc,char **argv) {
 	unsigned long long *taille_source;//La taille du fichier à cacher
@@ -71,3 +72,99 @@ int main(int argc,char **argv) {
     return EXIT_SUCCESS;
 }
 
+void cacherFichier(char *source, char *secret, char *nouveau, unsigned int type) {
+
+	FILE *fichier_destination, *fichier_source, *fichier_secret;
+	unsigned int caractereActuel, caractereSecret;
+	int i, j, fin;
+	unsigned int ancien[16], binaire[16], maillonFin[16];
+	//On ouvre les fichiers
+	fichier_destination = fopen(nouveau, "wb+");
+	fichier_source = fopen(source, "rb");
+
+	//On copie les premiers octets correspondants au type mime
+	for(i=0;i<8;i++) {
+		caractereActuel = fgetc(fichier_source);
+		fwrite (&caractereActuel, 1, 1, fichier_destination);
+	}
+
+	fichier_secret = fopen(secret, "rb");
+
+	remplir(ancien);
+	remplir(binaire);
+	remplir(maillonFin);
+
+	maillonFin[0] = 0;
+	maillonFin[1] = 1;
+	maillonFin[2] = 1;
+	maillonFin[3] = 1;
+	maillonFin[4] = 1;
+	maillonFin[5] = 0;
+
+	caractereSecret = fgetc(fichier_secret);
+
+	do	{
+		entiertobinaire(caractereSecret, binaire);
+
+		//On concatene avec ce qu'il nous reste
+		fusionTableau(binaire, ancien, 8);
+
+		//On supprime ancien
+		remplir(ancien);
+
+		//On encode le binaire
+		fin = encoder(binaire);
+
+		//On écrit jusqu'au dernier 0
+		for(i=0;i<fin;i++) {
+			for(j=1;j<=type;j++)	{
+				caractereActuel = fgetc(fichier_source);
+
+				if(j == type-1) {
+					caractereActuel = 0x00 + caractereActuel - caractereActuel%2 + binaire[i];
+				}
+				else {
+					caractereActuel = 0x00 + caractereActuel;
+				}
+
+				fwrite (&caractereActuel, 1, 1, fichier_destination);
+			}
+		}
+
+		//On enleve ce qu'on a écrit
+		cleanTable(binaire, ancien, fin);
+
+		//On lit le fichier secret et on le transforme en binaire
+		caractereSecret = fgetc(fichier_secret);
+	}
+	while (caractereSecret != EOF);
+	//On fusione ce qu'il reste avec le maillon de fin
+	fusionTableau(maillonFin, ancien, 6);
+
+	//On met les caracteres restant + le maillon de fin
+	i = 0;
+	while(maillonFin[i] != 2) {
+		for(j=1;j<=type;j++)	{
+			caractereActuel = fgetc(fichier_source);
+
+			if(j == type-1) {
+				caractereActuel = 0x00 + caractereActuel - caractereActuel%2 + maillonFin[i];
+			}
+			else {
+				caractereActuel = 0x00 + caractereActuel;
+			}
+
+			fwrite (&caractereActuel, 1, 1, fichier_destination);
+		}
+		i++;
+	}
+
+	while ((caractereActuel = fgetc(fichier_source)) != EOF)	{
+		fwrite (&caractereActuel, 1, 1, fichier_destination);
+	}
+
+	//On ferme les fichiers
+	fclose(fichier_destination);
+	fclose(fichier_source);
+	fclose(fichier_secret);
+}
